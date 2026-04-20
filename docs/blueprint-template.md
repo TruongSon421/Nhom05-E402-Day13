@@ -134,7 +134,7 @@
 
 ### Member C - Trương Đăng Nghĩa
 - [TASKS_COMPLETED]: Implemented SLO monitoring and alert evaluation system. Created app/slo_monitor.py for tracking service level objectives and app/alert_evaluator.py for alert rules. Added two new API endpoints for checking SLO compliance and alert status.
-- [EVIDENCE_LINK]: Commit 7213a16 + 49e9f00 + 72adf3b (SLO monitoring and alert evaluation system)
+- [EVIDENCE_LINK]: Commit 49e9f00 (SLO monitoring and alert evaluation system)
 
 ### Member D - Bùi Thế Công
 - [TASKS_COMPLETED]:
@@ -163,8 +163,9 @@
 - **Evidence Links**:
   - Load test execution: Terminal output shows 20 successful requests with valid correlation IDs
   - Incident injection commands: Verified via health endpoint status changes
-  - Metrics before/after: Captured via `curl http://127.0.0.1:8000/metrics` for each scenario
-  - 
+  - Metrics before/after: Captured via `curl http://127.0.0.1:8000/metrics` for each scenario. (Link: [screenshots](../screenshots/incident_injection))
+  - Commit: `c61e2d1 update blueprint-template.md with load test and incident injection`
+`188a8ec complete load test adn incident injection`
 
 ### [MEMBER_E_NAME]
 - [TASKS_COMPLETED]: 
