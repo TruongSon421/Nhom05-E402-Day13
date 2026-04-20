@@ -2,6 +2,10 @@ from __future__ import annotations
 
 import os
 
+from dotenv import load_dotenv
+
+load_dotenv()  # Load .env before any other imports that read env vars
+
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse, JSONResponse
 from structlog.contextvars import bind_contextvars
@@ -108,14 +112,13 @@ async def chat(request: Request, body: ChatRequest) -> ChatResponse:
             cost_usd=result.cost_usd,
             payload={"answer_preview": summarize_text(result.answer)},
         )
-        # Audit log: record every chat request (no PII – user_id already hashed)
         log_audit_event(
             action="chat_request",
-            actor=user_id_hash,
-            resource=f"feature:{body.feature}",
-            outcome="success",
+            user_id_hash=user_id_hash,
             correlation_id=request.state.correlation_id,
+            result="success",
             metadata={
+                "feature": body.feature,
                 "model": body.model,
                 "latency_ms": result.latency_ms,
                 "cost_usd": result.cost_usd,
@@ -143,10 +146,9 @@ async def chat(request: Request, body: ChatRequest) -> ChatResponse:
         )
         log_audit_event(
             action="chat_request",
-            actor=user_id_hash,
-            resource=f"feature:{body.feature}",
-            outcome="error",
+            user_id_hash=user_id_hash,
             correlation_id=request.state.correlation_id,
+            result="error",
             metadata={"error_type": error_type},
         )
         raise HTTPException(status_code=500, detail=error_type) from exc
@@ -157,7 +159,13 @@ async def enable_incident(name: str) -> JSONResponse:
     try:
         enable(name)
         log.warning("incident_enabled", service="control", payload={"name": name})
-        log_audit_event(action="incident_enable", actor="operator", resource=f"incident:{name}", outcome="success")
+        log_audit_event(
+            action="incident_enable",
+            user_id_hash="system",
+            correlation_id="system",
+            result="success",
+            metadata={"name": name},
+        )
         return JSONResponse({"ok": True, "incidents": status()})
     except KeyError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
@@ -168,13 +176,19 @@ async def disable_incident(name: str) -> JSONResponse:
     try:
         disable(name)
         log.warning("incident_disabled", service="control", payload={"name": name})
-        log_audit_event(action="incident_disable", actor="operator", resource=f"incident:{name}", outcome="success")
+        log_audit_event(
+            action="incident_disable",
+            user_id_hash="system",
+            correlation_id="system",
+            result="success",
+            metadata={"name": name},
+        )
         return JSONResponse({"ok": True, "incidents": status()})
     except KeyError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
 
 
-# ─── Dashboard builder ────────────────────────────────────────────────────────
+# --- Dashboard builder --------------------------------------------------------
 
 def _build_dashboard_html(metrics_data: dict) -> str:
     """Build a self-contained 6-panel Chart.js dashboard with SLO threshold lines."""
@@ -199,7 +213,7 @@ def _build_dashboard_html(metrics_data: dict) -> str:
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Day 13 Observability Dashboard – Nhóm 5 E402</title>
+<title>Day 13 Observability Dashboard - Nhom 5 E402</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
   :root {{
@@ -225,37 +239,37 @@ def _build_dashboard_html(metrics_data: dict) -> str:
 </style>
 </head>
 <body>
-<h1>📊 Observability Dashboard — Nhóm 5 E402</h1>
-<p class="sub">Day 13 Lab &nbsp;·&nbsp; <span class="cyan">Auto-refresh 15s</span></p>
+<h1>Observability Dashboard - Nhom 5 E402</h1>
+<p class="sub">Day 13 Lab &nbsp;&middot;&nbsp; <span class="cyan">Auto-refresh 15s</span></p>
 <div class="grid">
   <div class="card">
-    <h2>⚡ Latency P50 / P95 / P99</h2>
+    <h2>Latency P50 / P95 / P99</h2>
     <canvas id="cLat"></canvas>
     <div class="row"><span>P95 <span class="val">{latency_p95:.0f}ms</span></span><span>SLO <span class="val slo">3000ms</span></span></div>
   </div>
   <div class="card">
-    <h2>🚦 Total Requests</h2>
+    <h2>Total Requests</h2>
     <canvas id="cTraf"></canvas>
     <div class="row"><span>Total <span class="val">{traffic}</span></span></div>
   </div>
   <div class="card">
-    <h2>❌ Error Breakdown</h2>
+    <h2>Error Breakdown</h2>
     <canvas id="cErr"></canvas>
   </div>
   <div class="card">
-    <h2>💰 Accumulated Cost (USD)</h2>
+    <h2>Accumulated Cost (USD)</h2>
     <canvas id="cCost"></canvas>
     <div class="row"><span>Total <span class="val">${total_cost:.4f}</span></span><span>Budget <span class="val slo">$2.50/day</span></span></div>
   </div>
   <div class="card">
-    <h2>🔤 Tokens In / Out</h2>
+    <h2>Tokens In / Out</h2>
     <canvas id="cTok"></canvas>
     <div class="row"><span>In <span class="val">{tokens_in}</span></span><span>Out <span class="val">{tokens_out}</span></span></div>
   </div>
   <div class="card">
-    <h2>⭐ Quality Score Avg</h2>
+    <h2>Quality Score Avg</h2>
     <canvas id="cQual"></canvas>
-    <div class="row"><span>Score <span class="val">{quality_avg:.3f}</span></span><span>SLO <span class="val slo">≥0.75</span></span></div>
+    <div class="row"><span>Score <span class="val">{quality_avg:.3f}</span></span><span>SLO <span class="val slo">&ge;0.75</span></span></div>
   </div>
 </div>
 <script>
