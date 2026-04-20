@@ -25,10 +25,10 @@
 ## 3. Technical Evidence (Group)
 
 ### 3.1 Logging & Tracing
-- [EVIDENCE_CORRELATION_ID_SCREENSHOT]: [Path to image]
-- [EVIDENCE_PII_REDACTION_SCREENSHOT]: [Path to image]
-- [EVIDENCE_TRACE_WATERFALL_SCREENSHOT]: [Path to image]
-- [TRACE_WATERFALL_EXPLANATION]: (Briefly explain one interesting span in your trace)
+- [EVIDENCE_CORRELATION_ID_SCREENSHOT]: docs/evidence/correlation_id.png
+- [EVIDENCE_PII_REDACTION_SCREENSHOT]: docs/evidence/pii_redaction.png
+- [EVIDENCE_TRACE_WATERFALL_SCREENSHOT]: docs/evidence/langfuse_trace_waterfall.png
+- [TRACE_WATERFALL_EXPLANATION]: Span "mock_rag.retrieve" trong trace LabAgent.run() chiếm ~94% tổng latency khi incident rag_slow=True (time.sleep(2.5) trong mock_rag.py). So sánh với span "mock_llm.generate" chỉ ~150ms – cho thấy bottleneck nằm ở RAG retrieval, không phải LLM generation.
 
 ### 3.2 Dashboard & SLOs
 - [DASHBOARD_6_PANELS_SCREENSHOT]: docs/evidence/04_dashboard_6_panels.png
@@ -40,8 +40,8 @@
 | Cost Budget | < $2.5/day | 1d | $0.0409/day (baseline), $0.1303/day (cost_spike 3.2×) |
 
 ### 3.3 Alerts & Runbook
-- [ALERT_RULES_SCREENSHOT]: [Path to image]
-- [SAMPLE_RUNBOOK_LINK]: [docs/alerts.md#L...]
+- [ALERT_RULES_SCREENSHOT]: docs/evidence/alert_rules.png
+- [SAMPLE_RUNBOOK_LINK]: docs/alerts.md#1-high-latency-p95
 
 ---
 
@@ -180,10 +180,10 @@
   - `docs/evidence/` — Bộ screenshots bằng chứng tổng hợp của nhóm
 
 ### Member F - Nông Trung Kiên
-- [TASKS_COMPLETED]: Đã thực hiện tái thiết lập các cấu trúc định tuyến API giám sát (monitoring routes) bao gồm `/slo/status` và `/alerts/status` tại module `app/main.py`. Trực tiếp thiết kế và triển khai quy tắc cảnh báo (Alert Rule) thứ tư về tiêu chuẩn chất lượng phản hồi LLM (`low_quality_score`), bao gồm việc lập trình module đánh giá trạng thái và xây dựng quy trình xử lý sự cố (Runbook). Đồng thời, chủ trì công tác biên soạn tài liệu hướng dẫn thu thập minh chứng chứng thực (Evidence Guide), quản trị trạng thái tiến độ nhóm và phân tích chuyên sâu các kịch bản phản ứng sự cố (Incident Response Narrative) phục vụ báo cáo Blueprint.
-- [EVIDENCE_LINK]: docs/baocao-canhan-kien.md, app/alert_evaluator.py, config/alert_rules.yaml, docs/alerts.md, member-role-status.md
+- [TASKS_COMPLETED]: (1) Restored /slo/status và /alerts/status routes vào app/main.py (bị xóa ở commit 49e9f00). (2) Xây dựng GET /dashboard – 6-panel Chart.js dashboard với SLO threshold lines, auto-refresh 15s, không cần Streamlit. (3) Thêm alert rule thứ 4 low_quality_score vào config/alert_rules.yaml + evaluate_low_quality_score_alert() trong app/alert_evaluator.py + runbook #4 trong docs/alerts.md. (4) Tạo app/audit.py – audit log riêng tại data/audit.jsonl (bonus +2đ). (5) Tạo scripts/cost_report.py – phân tích cost trước/sau theo feature/model (bonus +3đ). (6) Biên soạn member-role-status.md, incident response narrative, demo script, và hoàn thiện blueprint report.
+- [EVIDENCE_LINK]: app/main.py (routes + dashboard), app/audit.py (audit log module), app/alert_evaluator.py (low_quality_score handler), config/alert_rules.yaml (rule #4), docs/alerts.md (runbook #4), scripts/cost_report.py, member-role-status.md
 
 ## 6. Bonus Items (Optional)
-- [BONUS_COST_OPTIMIZATION]: (Description + Evidence)
-- [BONUS_AUDIT_LOGS]: (Description + Evidence)
-- [BONUS_CUSTOM_METRIC]: (Description + Evidence)
+- [BONUS_COST_OPTIMIZATION]: **+3đ** — Script `scripts/cost_report.py` phân tích cost trước/sau theo từng feature và model. Kết quả: output/input token ratio = 3.25× khi cost_spike bật (do `output_tokens *= 4` trong mock_llm.py). Khuyến nghị: route non-critical traffic sang claude-haiku-4-5 (~4× rẻ hơn), cap max_tokens=200, dùng prompt cache. Savings ước tính: ~$0.035 USD / 20 requests khi chuyển 50% traffic sang Haiku. Evidence: chạy `python scripts/cost_report.py` sau `python scripts/load_test.py`.
+- [BONUS_AUDIT_LOGS]: **+2đ** — Module `app/audit.py` ghi audit trail riêng tại `data/audit.jsonl` (tách khỏi `data/logs.jsonl`). Mỗi event gồm: ts (ISO UTC), action, actor (user_id hashed – không PII), resource, outcome, correlation_id. Được gọi trong mọi chat request và incident toggle. Kiểm tra: `cat data/audit.jsonl` sau khi chạy app. Evidence: `app/audit.py` + `data/audit.jsonl`.
+- [BONUS_CUSTOM_METRIC]: **+2đ** — Dashboard tại `GET /dashboard` tự render HTML Chart.js 6 panels với SLO threshold lines (đường đỏ tại 3000ms latency, $2.50 cost, 0.75 quality). Auto-refresh mỗi 15s. Không cần Streamlit hay frontend build step – dashboard là single HTML response từ FastAPI. Evidence: `docs/evidence/04_dashboard_6_panels.png`, source trong `app/main.py::_build_dashboard_html()`.
