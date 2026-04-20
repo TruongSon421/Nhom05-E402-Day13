@@ -3,16 +3,18 @@ from __future__ import annotations
 import os
 
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from structlog.contextvars import bind_contextvars
 
 from .agent import LabAgent
+from .alert_evaluator import get_alert_status
 from .incidents import disable, enable, status
 from .logging_config import configure_logging, get_logger
 from .metrics import record_error, snapshot
 from .middleware import CorrelationIdMiddleware
 from .pii import hash_user_id, summarize_text
 from .schemas import ChatRequest, ChatResponse
+from .slo_monitor import get_slo_status
 from .tracing import tracing_enabled
 
 configure_logging()
@@ -128,3 +130,28 @@ async def disable_incident(name: str) -> JSONResponse:
         return JSONResponse({"ok": True, "incidents": status()})
     except KeyError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@app.get("/slo/status")
+async def slo_status() -> dict:
+    """Return current SLO compliance status for all SLIs."""
+    try:
+        return get_slo_status()
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=f"SLO config not found: {exc}") from exc
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"SLO calculation failed: {exc}") from exc
+
+
+@app.get("/alerts/status")
+async def alerts_status() -> dict:
+    """Return current alert evaluation status for all configured rules."""
+    try:
+        return get_alert_status()
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=f"Alert config not found: {exc}") from exc
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Alert evaluation failed: {exc}") from exc
+
+
+

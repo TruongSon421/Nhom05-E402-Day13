@@ -8,7 +8,6 @@ import yaml
 from . import metrics
 from .slo_monitor import calculate_error_rate
 
-
 _PROJECT_ROOT = Path(__file__).parent.parent
 
 
@@ -130,32 +129,56 @@ def evaluate_cost_spike_alert(
 ) -> dict:
     """
     Evaluate cost_budget_spike alert condition.
-    
+
     Args:
         metrics_data: Current metrics snapshot
         baseline: Baseline hourly cost
         multiplier: Spike detection multiplier
-        
+
     Returns:
         Alert evaluation result with firing status and values
     """
     # Calculate current hourly cost rate
     avg_cost = metrics_data.get("avg_cost_usd", 0.0)
     traffic = metrics_data.get("traffic", 0)
-    
+
     # Estimate current hourly cost (simplified)
     current_hourly_cost = avg_cost * traffic if traffic > 0 else 0.0
-    
+
     # Calculate threshold
     threshold = baseline * multiplier
-    
+
     # Check if current cost exceeds threshold
     firing = current_hourly_cost > threshold
-    
+
     return {
         "firing": firing,
         "current_value": round(current_hourly_cost, 4),
         "threshold": round(threshold, 4)
+    }
+
+
+def evaluate_low_quality_score_alert(metrics_data: dict, threshold: float = 0.60) -> dict:
+    """
+    Evaluate low_quality_score alert condition.
+
+    Fires when the rolling average quality score drops below the threshold,
+    indicating model degradation or poor retrieval quality.
+
+    Args:
+        metrics_data: Current metrics snapshot
+        threshold: Minimum acceptable quality score (default 0.60)
+
+    Returns:
+        Alert evaluation result with firing status and values
+    """
+    current_value = metrics_data.get("quality_avg", 1.0)
+    firing = current_value < threshold
+
+    return {
+        "firing": firing,
+        "current_value": round(current_value, 4),
+        "threshold": threshold,
     }
 
 
@@ -188,6 +211,8 @@ def get_alert_status() -> dict:
             evaluation = evaluate_high_error_rate_alert(metrics_data)
         elif alert_name == "cost_budget_spike":
             evaluation = evaluate_cost_spike_alert(metrics_data, baseline_cost)
+        elif alert_name == "low_quality_score":
+            evaluation = evaluate_low_quality_score_alert(metrics_data)
         else:
             # Unknown alert type, skip
             continue

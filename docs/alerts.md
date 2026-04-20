@@ -38,3 +38,19 @@
   - shorten prompts
   - route easy requests to cheaper model
   - apply prompt cache
+
+## 4. Low quality score
+- Severity: P3
+- Trigger: `quality_score_avg < 0.60 for 10m`
+- Impact: model responses degrade below acceptable threshold; user satisfaction affected
+- First checks:
+  1. Check `quality_avg` in `/metrics` – confirm sustained drop, not a single outlier
+  2. Open Langfuse traces filtered by low quality spans
+  3. Compare RAG `doc_count` in trace metadata – low doc count may indicate retrieval failure
+  4. Check if `rag_slow` or `cost_spike` incident toggles are enabled
+- Mitigation:
+  - Re-index or warm RAG vector store
+  - Increase `doc_count` retrieval limit in `mock_rag.py`
+  - Switch to a higher-quality model tier for affected feature
+  - If systematic: disable affected feature endpoint and page on-call
+

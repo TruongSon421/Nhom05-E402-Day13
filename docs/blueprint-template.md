@@ -11,7 +11,7 @@
   - Member C: [Trương Đăng Nghĩa] | Role: SLO & Alerts
   - Member D: [Bùi Thế Công] | Role: Load Test & Incident Injection
   - Member E: [Trần Ngọc Huy] | Role: Dashboard + Evidence
-  - Member F: [Name] | Role: Demo & Report
+  - Member F: [Nông Trung Kiên] | Role: Demo & Report
 
 ---
 
@@ -118,13 +118,11 @@
   - Route expensive features to cheaper models
   - Apply prompt caching to reduce token regeneration
 
-
-
 ---
 
 ## 5. Individual Contributions & Evidence
 
-### Member A - [Tên của bạn]
+### Member A - Trần Thượng Trường Sơn
 - [TASKS_COMPLETED]: Correlation ID middleware implementation (app/middleware.py), Log enrichment with user context binding (app/main.py), PII scrubbing processor activation (app/logging_config.py), Enhanced ChatRequest schema with model field (app/schemas.py) - Validation Score: 100/100
 - [EVIDENCE_LINK]: Commit 25ba3d2 (logging & PII foundation), Commit 67f4939 (schema enhancement) - Implementation with 100/100 validation score 
 
@@ -141,31 +139,27 @@
   1. **Load Test Baseline** — Executed `python scripts/load_test.py` (10 sequential requests + 5 concurrent requests)
      - Baseline metrics: avg_latency=150ms, p95=151ms, p99=151ms, zero errors
      - Validation score: 100/100 (all required fields present, correlation IDs valid, PII scrubbed)
-  
   2. **Incident 1: rag_slow Debug** — Injected 2.5s latency in RAG retrieval
      - Observed: P95 latency 151ms → 2651ms (17.5× increase)
      - Root cause confirmed: `app/mock_rag.py:18` `time.sleep(2.5)`
      - Evidence: Metrics snapshot before/after, load test output shows ~2657ms per request
-  
   3. **Incident 2: tool_fail Debug** — Injected RuntimeError in RAG retrieval
      - Observed: 100% error rate, error_breakdown={RuntimeError: 10}
      - Root cause confirmed: `app/mock_rag.py:16` `raise RuntimeError("Vector store timeout")`
      - Evidence: HTTP 500 responses, metrics show error_breakdown updated
-  
   4. **Incident 3: cost_spike Debug** — Injected 4× output token multiplier
      - Observed: Cost 3.25× increase ($0.0601 → $0.1303), tokens_out ratio 4×
      - Root cause confirmed: `app/mock_llm.py:32` `output_tokens *= 4`
      - Evidence: Metrics show tokens_in_total=1360, tokens_out_total=8416 (3.25× vs baseline)
-  
   5. **Documentation** — Filled Section 4 (Incident Response) with detailed root cause analysis
   6. **SLO Update** — Recorded observed baseline and spiked metrics in Section 3.2 table
 
-- **Evidence Links**:
+- [EVIDENCE_LINK]:
   - Load test execution: Terminal output shows 20 successful requests with valid correlation IDs
   - Incident injection commands: Verified via health endpoint status changes
   - Metrics before/after: Captured via `curl http://127.0.0.1:8000/metrics` for each scenario. (Link: [screenshots](../screenshots/incident_injection))
   - Commit: `c61e2d1 update blueprint-template.md with load test and incident injection`
-`188a8ec complete load test adn incident injection`
+  - Commit: `188a8ec complete load test adn incident injection`
 
 ### Member E — Trần Ngọc Huy
 - [TASKS_COMPLETED]:
@@ -176,16 +170,18 @@
      - Panel 4: Cost Over Time (USD) — total + avg per request, SLO line $2.5/day
      - Panel 5: Tokens In / Out với output/input ratio
      - Panel 6: Quality Score avg vs SLO target 0.75
-     - Auto-refresh mỗi 15 giây, đơn vị rõ ràng trên tất cả panels
+     - Auto-refresh mỗi 15 giây, hiển thị trực quan thông qua Streamlit Dashboard.
   2. Thu thập và tổ chức toàn bộ bằng chứng screenshots cho nhóm vào `docs/evidence/`
   3. Cập nhật [DASHBOARD_6_PANELS_SCREENSHOT] trong Section 3.2
 
 - [EVIDENCE_LINK]:
-  - `dashboard.py` — Streamlit dashboard 6 panels (commit trực tiếp)
+  - `dashboard.py` — Streamlit dashboard 6 panels (commit 57dde06)
   - `docs/evidence/04_dashboard_6_panels.png` — Screenshot dashboard đầy đủ 6 panels
   - `docs/evidence/` — Bộ screenshots bằng chứng tổng hợp của nhóm
 
----
+### Member F - Nông Trung Kiên
+- [TASKS_COMPLETED]: Restored missing API routes /slo/status and /alerts/status into app/main.py. Added 4th alert rule low_quality_score to config/alert_rules.yaml, implemented evaluate_low_quality_score_alert() in app/alert_evaluator.py, and wrote corresponding runbook in docs/alerts.md. Authored guide-evidence.md and member-role-status.md tracking all member progress and evidence checklist. Prepared incident response narrative and demo script for group presentation.
+- [EVIDENCE_LINK]: guide-evidence.md, app/alert_evaluator.py, config/alert_rules.yaml, docs/alerts.md, member-role-status.md
 
 ## 6. Bonus Items (Optional)
 - [BONUS_COST_OPTIMIZATION]: (Description + Evidence)
