@@ -421,7 +421,7 @@ git push origin main
 | **C** | Trương Đăng Nghĩa | ✅ Code OK (routes fixed by F) | ❌ 1 ảnh | ✅ Đã điền | Chụp `alert_rules.png` |
 | **D** | [Chưa có tên] | ✅ Dashboard built by F | ❌ 1 ảnh | ❌ Chưa điền | Điền tên vào blueprint |
 | **E** | [Chưa có tên] | ❌ Chưa làm | ❌ Tất cả | ❌ Chưa điền | **Tạo folder + chụp tất cả ảnh** |
-| **F** | [Chưa có tên] | ✅ Fix xong | – | ⚠️ Còn trống | **Điền blueprint** + push + chuẩn bị demo |
+| **F** | Nông Trung Kiên | ✅ Fix xong | – | ⚠️ Còn trống | **Điền blueprint** + push + chuẩn bị demo |
 
 ### Ảnh cần có trong `docs/evidence/`
 

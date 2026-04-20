@@ -71,13 +71,17 @@ Trước khi chụp bất kỳ ảnh nào, cần tạo dữ liệu mẫu để l
     *   **Lưu tên:** `docs/evidence/alert_rules.png`
     *   *Lưu ý:* Phải kiểm tra file `docs/alerts.md` có link tương ứng trong blueprint.
 
-### 5. Dashboard 6 Panels (Minh chứng cho Member D & E)
-*   **Mục tiêu:** Giao diện Dashboard đẹp, đủ 6 biểu đồ và có đường kẻ SLO (đường đỏ).
+### 5. Dashboard 6 Panels (Minh chứng cho Member E - Huygo111)
+*   **Mục tiêu:** Giao diện Dashboard Streamlit chuyên nghiệp, đủ 6 biểu đồ và có đường kẻ SLO.
 *   **Cách chụp:**
-    *   Mở trình duyệt: `http://localhost:8000/dashboard`
-    *   Đợi khoảng 1 phút để dữ liệu đổ về (auto-refresh).
-    *   **Ảnh cần chụp:** Toàn bộ trang Dashboard hiển thị rõ 6 panel: Latency, Traffic, Errors, Cost, Tokens, Quality.
-    *   **Lưu tên:** `docs/evidence/dashboard_6panels.png`
+    *   Cài đặt dependency (nếu chưa có): `pip install streamlit altair pandas`
+    *   Chạy Dashboard (Member E đã code sẵn file `dashboard.py` ở thư mục gốc):
+        ```bash
+        streamlit run dashboard.py
+        ```
+    *   Mở trình duyệt theo địa chỉ Streamlit cung cấp (thường là `http://localhost:8501`).
+    *   **Ảnh cần chụp:** Toàn bộ trang Dashboard hiển thị rõ 6 panel (Latency, Traffic, Error Rate, Cost, Tokens, Quality).
+    *   **Lưu tên:** `docs/evidence/dashboard_6panels.png` (Huygo thường đặt tên là `04_dashboard_6_panels.png`, hãy kiểm tra và thống nhất với báo cáo).
 
 ### 6. Validation Score (Bằng chứng tổng hợp)
 *   **Mục tiêu:** Chứng minh toàn bộ log đạt chuẩn 100/100.
