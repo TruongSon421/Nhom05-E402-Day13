@@ -3,10 +3,10 @@
 > **Instruction**: Fill in all sections below. This report is designed to be parsed by an automated grading assistant. Ensure all tags (e.g., `[GROUP_NAME]`) are preserved.
 
 ## 1. Team Metadata
-- [GROUP_NAME]: 
-- [REPO_URL]: 
+- [GROUP_NAME]: Nhóm 5 - E402
+- [REPO_URL]: https://github.com/TruongSon421/Nhom05-E402-Day13.git
 - [MEMBERS]:
-  - Member A: [Name] | Role: Logging & PII
+  - Member A: [Trần Thượng Trường Sơn] | Role: Logging & PII
   - Member B: [Name] | Role: Tracing & Enrichment
   - Member C: [Name] | Role: SLO & Alerts
   - Member D: [Name] | Role: Load Test & Dashboard
@@ -15,9 +15,9 @@
 ---
 
 ## 2. Group Performance (Auto-Verified)
-- [VALIDATE_LOGS_FINAL_SCORE]: /100
+- [VALIDATE_LOGS_FINAL_SCORE]: 100/100
 - [TOTAL_TRACES_COUNT]: 
-- [PII_LEAKS_FOUND]: 
+- [PII_LEAKS_FOUND]: 0 
 
 ---
 
@@ -55,9 +55,9 @@
 
 ## 5. Individual Contributions & Evidence
 
-### [MEMBER_A_NAME]
-- [TASKS_COMPLETED]: 
-- [EVIDENCE_LINK]: (Link to specific commit or PR)
+### Member A - [Tên của bạn]
+- [TASKS_COMPLETED]: Correlation ID middleware implementation (app/middleware.py), Log enrichment with user context binding (app/main.py), PII scrubbing processor activation (app/logging_config.py), Enhanced ChatRequest schema with model field (app/schemas.py) - Validation Score: 100/100
+- [EVIDENCE_LINK]: Commit 25ba3d2 (logging & PII foundation), Commit 67f4939 (schema enhancement) - Implementation with 100/100 validation score 
 
 ### [MEMBER_B_NAME]
 - [TASKS_COMPLETED]: 
