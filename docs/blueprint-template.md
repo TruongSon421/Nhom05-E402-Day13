@@ -7,10 +7,11 @@
 - [REPO_URL]: https://github.com/TruongSon421/Nhom05-E402-Day13.git
 - [MEMBERS]:
   - Member A: [Trần Thượng Trường Sơn] | Role: Logging & PII
-  - Member B: [Name] | Role: Tracing & Enrichment
+  - Member B: [Bùi Lâm Tiến] | Role: Tracing & Enrichment
   - Member C: [Name] | Role: SLO & Alerts
   - Member D: [Name] | Role: Load Test & Dashboard
-  - Member E: [Name] | Role: Demo & Report
+  - Member E: [Name] | Role: Dashboard + Evidence
+  - Member F: [Name] | Role: Demo & Report
 
 ---
 
@@ -59,9 +60,9 @@
 - [TASKS_COMPLETED]: Correlation ID middleware implementation (app/middleware.py), Log enrichment with user context binding (app/main.py), PII scrubbing processor activation (app/logging_config.py), Enhanced ChatRequest schema with model field (app/schemas.py) - Validation Score: 100/100
 - [EVIDENCE_LINK]: Commit 25ba3d2 (logging & PII foundation), Commit 67f4939 (schema enhancement) - Implementation with 100/100 validation score 
 
-### [MEMBER_B_NAME]
-- [TASKS_COMPLETED]: 
-- [EVIDENCE_LINK]: 
+### Member B - Bùi Lâm Tiến
+- [TASKS_COMPLETED]: Tracing with Langfuse (app/agent.py), Correlation ID propagation to traces, Enhanced trace metadata (correlation_id, env, tags)
+- [EVIDENCE_LINK]: Updated agent.py (correlation_id param + langfuse_context metadata), Updated main.py (pass correlation_id to agent.run()) 
 
 ### [MEMBER_C_NAME]
 - [TASKS_COMPLETED]: 
