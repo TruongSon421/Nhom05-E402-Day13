@@ -124,8 +124,13 @@
 ## 5. Individual Contributions & Evidence
 
 ### Member A - Trần Thượng Trường Sơn
-- [TASKS_COMPLETED]: Correlation ID middleware implementation (app/middleware.py), Log enrichment with user context binding (app/main.py), PII scrubbing processor activation (app/logging_config.py), Enhanced ChatRequest schema with model field (app/schemas.py) - Validation Score: 100/100
-- [EVIDENCE_LINK]: Commit 25ba3d2 (logging & PII foundation), Commit 67f4939 (schema enhancement) - Implementation with 100/100 validation score 
+- [TASKS_COMPLETED]:
+  1. **Logging & PII cơ bản** — Correlation ID middleware (`app/middleware.py`), log enrichment (`app/main.py`), PII scrubbing processor (`app/logging_config.py`), schema field `model` (`app/schemas.py`) → Validation Score: 100/100
+  2. **Mở rộng PII patterns** — Thêm passport, address_vn, sửa phone_vn regex (cả dạng có/không dấu cách), reorder cccd trước phone_vn để tránh partial match (`app/pii.py`)
+  3. **Fix Langfuse tracing** — Thêm `load_dotenv()` vào `app/main.py`, migration v3→v2.60.3 (`app/tracing.py`, `app/agent.py`), fix `LANGFUSE_HOST` → `LANGFUSE_BASE_URL` trong `.env` → traces hiển thị trên Cloud UI
+  4. **Bonus: audit.py (+2đ) & cost cap (+3đ)** — `app/audit.py` audit trail riêng; `DEFAULT_MAX_TOKENS=120` trong `app/mock_llm.py` để cap token output
+  5. **Fix pytest & evidence** — `conftest.py` fix ModuleNotFoundError; chụp `langfuse_traces_list.png` và `langfuse_trace_waterfall.png`
+- [EVIDENCE_LINK]: Commits 25ba3d2, 67f4939, dfd7530; `app/pii.py`, `app/tracing.py`, `app/audit.py`, `app/mock_llm.py`, `conftest.py`
 
 ### Member B - Bùi Lâm Tiến
 - [TASKS_COMPLETED]: Tracing with Langfuse (app/agent.py), Correlation ID propagation to traces, Enhanced trace metadata (correlation_id, env, tags)
