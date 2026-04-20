@@ -8,8 +8,8 @@
 - [MEMBERS]:
   - Member A: [Trần Thượng Trường Sơn] | Role: Logging & PII
   - Member B: [Bùi Lâm Tiến] | Role: Tracing & Enrichment
-  - Member C: [Name] | Role: SLO & Alerts
-  - Member D: [Name] | Role: Load Test & Dashboard
+  - Member C: [Trương Đăng Nghĩa] | Role: SLO & Alerts
+  - Member D: [] | Role: Load Test & Dashboard
   - Member E: [Name] | Role: Dashboard + Evidence
   - Member F: [Name] | Role: Demo & Report
 
