@@ -58,11 +58,11 @@
 
 ### Member A - [Tên của bạn]
 - [TASKS_COMPLETED]: Correlation ID middleware implementation (app/middleware.py), Log enrichment with user context binding (app/main.py), PII scrubbing processor activation (app/logging_config.py), Enhanced ChatRequest schema with model field (app/schemas.py) - Validation Score: 100/100
-- [EVIDENCE_LINK]: Commit 505b18e () - Implementation with 100/100 validation score (Unique correlation IDs found: 21)
+- [EVIDENCE_LINK]: Commit 25ba3d2 (logging & PII foundation), Commit 67f4939 (schema enhancement) - Implementation with 100/100 validation score 
 
 ### Member B - Bùi Lâm Tiến
 - [TASKS_COMPLETED]: Tracing with Langfuse (app/agent.py), Correlation ID propagation to traces, Enhanced trace metadata (correlation_id, env, tags)
-- [EVIDENCE_LINK]: Updated agent.py (correlation_id param + langfuse_context metadata), Updated main.py (pass correlation_id to agent.run()) 
+- [EVIDENCE_LINK]: Commit 505b18e () - Implementation with 100/100 validation score (Unique correlation IDs found: 21)
 
 ### [MEMBER_C_NAME]
 - [TASKS_COMPLETED]: 
