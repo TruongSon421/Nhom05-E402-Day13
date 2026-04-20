@@ -17,7 +17,7 @@
 
 ## 2. Group Performance (Auto-Verified)
 - [VALIDATE_LOGS_FINAL_SCORE]: 100/100
-- [TOTAL_TRACES_COUNT]: 41
+- [TOTAL_TRACES_COUNT]: 65
 - [PII_LEAKS_FOUND]: 0 
 
 ---
@@ -27,8 +27,9 @@
 ### 3.1 Logging & Tracing
 - [EVIDENCE_CORRELATION_ID_SCREENSHOT]: docs/evidence/correlation_id.png
 - [EVIDENCE_PII_REDACTION_SCREENSHOT]: docs/evidence/pii_redaction.png
+- [EVIDENCE_LANGFUSE_TRACES_LIST_SCREENSHOT]: docs/evidence/langfuse_traces_list.png
 - [EVIDENCE_TRACE_WATERFALL_SCREENSHOT]: docs/evidence/langfuse_trace_waterfall.png
-- [TRACE_WATERFALL_EXPLANATION]: Span "mock_rag.retrieve" trong trace LabAgent.run() chiếm ~94% tổng latency khi incident rag_slow=True (time.sleep(2.5) trong mock_rag.py). So sánh với span "mock_llm.generate" chỉ ~150ms – cho thấy bottleneck nằm ở RAG retrieval, không phải LLM generation.
+- [TRACE_WATERFALL_EXPLANATION]: Trace waterfall cho thấy 3 spans lồng nhau: chat/qa (root) → LabAgent.run (0.15s) → rag.retrieve → llm.generate (0.15s). Span llm.generate hiển thị đầy đủ input prompt_preview, output answer_preview, và metadata tokens. Khi incident rag_slow=True, span rag.retrieve chiếm ~2.5s (~94% latency) so với llm.generate chỉ 0.15s — xác định chính xác bottleneck tại RAG retrieval.
 
 ### 3.2 Dashboard & SLOs
 - [DASHBOARD_6_PANELS_SCREENSHOT]: docs/evidence/04_dashboard_6_panels.png
