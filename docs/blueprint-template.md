@@ -139,7 +139,7 @@
 ### Member D - Bùi Thế Công
 - [TASKS_COMPLETED]:
   1. **Load Test Baseline** — Executed `python scripts/load_test.py` (10 sequential requests + 5 concurrent requests)
-     - Baseline metrics: avg_latency=157ms, p95=151ms, p99=151ms, zero errors
+     - Baseline metrics: avg_latency=150ms, p95=151ms, p99=151ms, zero errors
      - Validation score: 100/100 (all required fields present, correlation IDs valid, PII scrubbed)
   
   2. **Incident 1: rag_slow Debug** — Injected 2.5s latency in RAG retrieval
