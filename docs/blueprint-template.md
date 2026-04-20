@@ -66,7 +66,7 @@
 
 ### Member C - Trương Đăng Nghĩa
 - [TASKS_COMPLETED]: Implemented SLO monitoring and alert evaluation system. Created app/slo_monitor.py for tracking service level objectives and app/alert_evaluator.py for alert rules. Added two new API endpoints for checking SLO compliance and alert status.
-- [EVIDENCE_LINK]: Commit 49e9f00 (SLO monitoring and alert evaluation system)
+- [EVIDENCE_LINK]: Commit 7213a16 + 49e9f00 + 72adf3b (SLO monitoring and alert evaluation system)
 
 ### [MEMBER_D_NAME]
 - [TASKS_COMPLETED]: 
