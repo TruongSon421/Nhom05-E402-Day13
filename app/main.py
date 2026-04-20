@@ -41,6 +41,19 @@ async def health() -> dict:
 async def metrics() -> dict:
     return snapshot()
 
+@app.get("/slo/status")
+async def slo_status() -> dict:
+    """Get current SLO compliance status for all SLIs."""
+    from .slo_monitor import get_slo_status
+    return get_slo_status()
+
+
+@app.get("/alerts/status")
+async def alerts_status() -> dict:
+    """Get current alert firing status and thresholds."""
+    from .alert_evaluator import get_alert_status
+    return get_alert_status()
+
 
 @app.post("/chat", response_model=ChatResponse)
 async def chat(request: Request, body: ChatRequest) -> ChatResponse:
