@@ -64,8 +64,8 @@
 - [TASKS_COMPLETED]: Tracing with Langfuse (app/agent.py), Correlation ID propagation to traces, Enhanced trace metadata (correlation_id, env, tags)
 - [EVIDENCE_LINK]: Commit 505b18e () - Implementation with 100/100 validation score (Unique correlation IDs found: 21)
 
-### [MEMBER_C_NAME]
-- [TASKS_COMPLETED]: 
+### Member B - Trương Đăng Nghĩa
+- [TASKS_COMPLETED]: Implemented SLO monitoring and alert evaluation system. Created app/slo_monitor.py for tracking service level objectives and app/alert_evaluator.py for alert rules. Added two new API endpoints for checking SLO compliance and alert status.
 - [EVIDENCE_LINK]: 
 
 ### [MEMBER_D_NAME]
