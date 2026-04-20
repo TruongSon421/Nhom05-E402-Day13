@@ -180,8 +180,8 @@
   - `docs/evidence/` — Bộ screenshots bằng chứng tổng hợp của nhóm
 
 ### Member F - Nông Trung Kiên
-- [TASKS_COMPLETED]: Restored missing API routes /slo/status and /alerts/status into app/main.py. Added 4th alert rule low_quality_score to config/alert_rules.yaml, implemented evaluate_low_quality_score_alert() in app/alert_evaluator.py, and wrote corresponding runbook in docs/alerts.md. Authored guide-evidence.md and member-role-status.md tracking all member progress and evidence checklist. Prepared incident response narrative and demo script for group presentation.
-- [EVIDENCE_LINK]: guide-evidence.md, app/alert_evaluator.py, config/alert_rules.yaml, docs/alerts.md, member-role-status.md
+- [TASKS_COMPLETED]: Đã thực hiện tái thiết lập các cấu trúc định tuyến API giám sát (monitoring routes) bao gồm `/slo/status` và `/alerts/status` tại module `app/main.py`. Trực tiếp thiết kế và triển khai quy tắc cảnh báo (Alert Rule) thứ tư về tiêu chuẩn chất lượng phản hồi LLM (`low_quality_score`), bao gồm việc lập trình module đánh giá trạng thái và xây dựng quy trình xử lý sự cố (Runbook). Đồng thời, chủ trì công tác biên soạn tài liệu hướng dẫn thu thập minh chứng chứng thực (Evidence Guide), quản trị trạng thái tiến độ nhóm và phân tích chuyên sâu các kịch bản phản ứng sự cố (Incident Response Narrative) phục vụ báo cáo Blueprint.
+- [EVIDENCE_LINK]: docs/baocao-canhan-kien.md, app/alert_evaluator.py, config/alert_rules.yaml, docs/alerts.md, member-role-status.md
 
 ## 6. Bonus Items (Optional)
 - [BONUS_COST_OPTIMIZATION]: (Description + Evidence)

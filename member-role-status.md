@@ -952,7 +952,7 @@ git push origin main
 | **C** | Trương Đăng Nghĩa | ✅ Routes OK | ✅ Đủ | ✅ Đã điền | Xong |
 | **D** | Bùi Thế Công | ✅ Xong | ✅ Đủ | ✅ Đã điền | Xong |
 | **E** | Trần Ngọc Huy | ✅ Xong | ✅ Tất cả | ✅ Đã điền | Xong |
-| **F** | Nông Trung Kiên | ✅ Xong | ✅ Xong | ✅ Đã điền | Xong |
+| **F** | Nông Trung Kiên | ✅ Xong | ✅ Xong | ✅ Đã nộp BC cá nhân | Xong |
 
 ### Ảnh hiện có trong `docs/evidence/`
 
