@@ -7,14 +7,12 @@ from fastapi.responses import JSONResponse
 from structlog.contextvars import bind_contextvars
 
 from .agent import LabAgent
-from .alert_evaluator import get_alert_status
 from .incidents import disable, enable, status
 from .logging_config import configure_logging, get_logger
 from .metrics import record_error, snapshot
 from .middleware import CorrelationIdMiddleware
 from .pii import hash_user_id, summarize_text
 from .schemas import ChatRequest, ChatResponse
-from .slo_monitor import get_slo_status
 from .tracing import tracing_enabled
 
 configure_logging()
@@ -42,28 +40,6 @@ async def health() -> dict:
 @app.get("/metrics")
 async def metrics() -> dict:
     return snapshot()
-
-
-@app.get("/slo/status")
-async def slo_status() -> dict:
-    """Return current SLO compliance status."""
-    try:
-        return get_slo_status()
-    except FileNotFoundError as exc:
-        raise HTTPException(status_code=500, detail=f"SLO config not found: {exc}") from exc
-    except Exception as exc:
-        raise HTTPException(status_code=500, detail=f"SLO calculation failed: {exc}") from exc
-
-
-@app.get("/alerts/status")
-async def alerts_status() -> dict:
-    """Return current alert evaluation status."""
-    try:
-        return get_alert_status()
-    except FileNotFoundError as exc:
-        raise HTTPException(status_code=500, detail=f"Alert config not found: {exc}") from exc
-    except Exception as exc:
-        raise HTTPException(status_code=500, detail=f"Alert evaluation failed: {exc}") from exc
 
 
 @app.post("/chat", response_model=ChatResponse)

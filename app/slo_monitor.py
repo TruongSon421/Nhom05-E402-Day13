@@ -61,6 +61,9 @@ def calculate_sli_compliance(
         raise ValueError(f"Invalid comparison type: {comparison}")
 
 
+_PROJECT_ROOT = Path(__file__).parent.parent
+
+
 def load_slo_config(config_path: str = "config/slo.yaml") -> dict:
     """
     Load and parse SLO configuration from YAML file.
@@ -76,8 +79,8 @@ def load_slo_config(config_path: str = "config/slo.yaml") -> dict:
         yaml.YAMLError: If config file is malformed
         ValueError: If required fields are missing
     """
-    path = Path(config_path)
-    
+    path = Path(config_path) if Path(config_path).is_absolute() else _PROJECT_ROOT / config_path
+
     if not path.exists():
         raise FileNotFoundError(f"SLO configuration file not found: {config_path}")
     

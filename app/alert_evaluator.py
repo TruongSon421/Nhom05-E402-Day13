@@ -9,6 +9,9 @@ from . import metrics
 from .slo_monitor import calculate_error_rate
 
 
+_PROJECT_ROOT = Path(__file__).parent.parent
+
+
 def load_alert_rules(config_path: str = "config/alert_rules.yaml") -> list[dict]:
     """
     Load and parse alert rules from YAML file.
@@ -24,8 +27,8 @@ def load_alert_rules(config_path: str = "config/alert_rules.yaml") -> list[dict]
         yaml.YAMLError: If config file is malformed
         ValueError: If required fields are missing
     """
-    path = Path(config_path)
-    
+    path = Path(config_path) if Path(config_path).is_absolute() else _PROJECT_ROOT / config_path
+
     if not path.exists():
         raise FileNotFoundError(f"Alert rules configuration file not found: {config_path}")
     
