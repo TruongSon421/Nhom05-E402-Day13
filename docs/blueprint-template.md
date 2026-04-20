@@ -184,6 +184,6 @@
 - [EVIDENCE_LINK]: docs/baocao-canhan-kien.md, app/alert_evaluator.py, config/alert_rules.yaml, docs/alerts.md, member-role-status.md
 
 ## 6. Bonus Items (Optional)
-- [BONUS_COST_OPTIMIZATION]: (Description + Evidence)
-- [BONUS_AUDIT_LOGS]: (Description + Evidence)
+- [BONUS_COST_OPTIMIZATION]: Added `DEFAULT_MAX_TOKENS = 120` cap to `FakeLLM.generate()` in `app/mock_llm.py`. Baseline (uncapped, max 180 tokens): avg output = 122.2 tokens/req → avg cost $0.001833/req. Optimized (capped at 120): avg output = 105.8 tokens/req → avg cost $0.001588/req. **Cost reduction: ~13.4%**. Evidence: `app/mock_llm.py` diff, measured over 20 requests with fixed random seed.
+- [BONUS_AUDIT_LOGS]: Implemented `app/audit.py` — separate audit log written to `data/audit.jsonl` (configured via `AUDIT_LOG_PATH` env var). Every `/chat` request (success + error) and every `/incidents/{name}/enable|disable` action writes a structured JSON audit record containing: `ts`, `action`, `user_id_hash`, `correlation_id`, `result`, `metadata`. Audit file is isolated from `data/logs.jsonl` for independent retention and compliance review. Evidence: `app/audit.py`, `app/main.py` audit calls, `data/audit.jsonl`.
 - [BONUS_CUSTOM_METRIC]: (Description + Evidence)

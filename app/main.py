@@ -19,6 +19,7 @@ from .middleware import CorrelationIdMiddleware
 from .pii import hash_user_id, summarize_text
 from .schemas import ChatRequest, ChatResponse
 from .slo_monitor import get_slo_status
+from .audit import log_audit_event
 from .tracing import tracing_enabled
 
 configure_logging()
@@ -95,6 +96,13 @@ async def chat(request: Request, body: ChatRequest) -> ChatResponse:
             cost_usd=result.cost_usd,
             payload={"answer_preview": summarize_text(result.answer)},
         )
+        log_audit_event(
+            action="chat_request",
+            user_id_hash=user_id_hash,
+            correlation_id=request.state.correlation_id,
+            result="success",
+            metadata={"feature": body.feature, "latency_ms": result.latency_ms, "cost_usd": result.cost_usd},
+        )
         return ChatResponse(
             answer=result.answer,
             correlation_id=request.state.correlation_id,
@@ -113,6 +121,13 @@ async def chat(request: Request, body: ChatRequest) -> ChatResponse:
             error_type=error_type,
             payload={"detail": str(exc), "message_preview": summarize_text(body.message)},
         )
+        log_audit_event(
+            action="chat_request",
+            user_id_hash=user_id_hash,
+            correlation_id=request.state.correlation_id,
+            result="error",
+            metadata={"error_type": error_type},
+        )
         raise HTTPException(status_code=500, detail=error_type) from exc
 
 
@@ -121,6 +136,7 @@ async def enable_incident(name: str) -> JSONResponse:
     try:
         enable(name)
         log.warning("incident_enabled", service="control", payload={"name": name})
+        log_audit_event(action="incident_enable", user_id_hash="system", correlation_id="system", result="success", metadata={"name": name})
         return JSONResponse({"ok": True, "incidents": status()})
     except KeyError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
@@ -131,6 +147,7 @@ async def disable_incident(name: str) -> JSONResponse:
     try:
         disable(name)
         log.warning("incident_disabled", service="control", payload={"name": name})
+        log_audit_event(action="incident_disable", user_id_hash="system", correlation_id="system", result="success", metadata={"name": name})
         return JSONResponse({"ok": True, "incidents": status()})
     except KeyError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
