@@ -10,7 +10,7 @@
   - Member B: [Bùi Lâm Tiến] | Role: Tracing & Enrichment
   - Member C: [Trương Đăng Nghĩa] | Role: SLO & Alerts
   - Member D: [Bùi Thế Công] | Role: Load Test & Incident Injection
-  - Member E: [Name] | Role: Dashboard + Evidence
+  - Member E: [Trần Ngọc Huy] | Role: Dashboard + Evidence
   - Member F: [Name] | Role: Demo & Report
 
 ---
@@ -31,7 +31,7 @@
 - [TRACE_WATERFALL_EXPLANATION]: (Briefly explain one interesting span in your trace)
 
 ### 3.2 Dashboard & SLOs
-- [DASHBOARD_6_PANELS_SCREENSHOT]: [Path to image]
+- [DASHBOARD_6_PANELS_SCREENSHOT]: docs/evidence/04_dashboard_6_panels.png
 - [SLO_TABLE]:
 | SLI | Target | Window | Current Value |
 |---|---:|---|---:|
@@ -167,9 +167,23 @@
   - Commit: `c61e2d1 update blueprint-template.md with load test and incident injection`
 `188a8ec complete load test adn incident injection`
 
-### [MEMBER_E_NAME]
-- [TASKS_COMPLETED]: 
-- [EVIDENCE_LINK]: 
+### Member E — Trần Ngọc Huy
+- [TASKS_COMPLETED]:
+  1. Build Observability Dashboard 6 panels bằng Streamlit (`dashboard.py`):
+     - Panel 1: Latency P50/P95/P99 (ms) với SLO threshold line ở 3000ms
+     - Panel 2: Traffic — donut chart Success vs Error request count
+     - Panel 3: Error Rate (%) với SLO threshold 2%
+     - Panel 4: Cost Over Time (USD) — total + avg per request, SLO line $2.5/day
+     - Panel 5: Tokens In / Out với output/input ratio
+     - Panel 6: Quality Score avg vs SLO target 0.75
+     - Auto-refresh mỗi 15 giây, đơn vị rõ ràng trên tất cả panels
+  2. Thu thập và tổ chức toàn bộ bằng chứng screenshots cho nhóm vào `docs/evidence/`
+  3. Cập nhật [DASHBOARD_6_PANELS_SCREENSHOT] trong Section 3.2
+
+- [EVIDENCE_LINK]:
+  - `dashboard.py` — Streamlit dashboard 6 panels (commit trực tiếp)
+  - `docs/evidence/04_dashboard_6_panels.png` — Screenshot dashboard đầy đủ 6 panels
+  - `docs/evidence/` — Bộ screenshots bằng chứng tổng hợp của nhóm
 
 ---
 
